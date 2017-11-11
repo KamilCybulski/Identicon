@@ -17,6 +17,7 @@ defmodule Identicon do
     |> build_grid
     |> build_pixel_map
     |> draw_image
+    |> save_image(input)
   end
 
 
@@ -70,21 +71,31 @@ defmodule Identicon do
       vertical = div(index, 5) * 50
       top_left = {horizontal, vertical}
       bottom_rigth = {horizontal + 50, vertical + 50}
+
+      {top_left, bottom_rigth}
     end
 
     %Identicon.Image{data | pixel_map: pixel_map}
   end
 
 
-  # Struct(Image) -> File(png)
+  # Struct(Image) -> image(png)
+  # Draw the image based on the pixel_map
   defp draw_image(%Identicon.Image{color: color, pixel_map: pixel_map}) do
     image = :egd.create(250, 250)
-    fill = :egd.color(color)
+    color = :egd.color(color)
 
-    Enum.each pixel_map, fn {top_left, bot_right} ->
-      :egd.filledRectangle(image, top_left, bot_right, fill)
+    Enum.each pixel_map, fn ({top_left, bot_right}) ->
+      :egd.filledRectangle(image, top_left, bot_right, color)
     end
 
-    :edg.render(image)
+    :egd.render(image)
+  end
+
+
+  #image(png), string -> ???
+  # Save given image to the disk
+  defp save_image(img, input) do
+    File.write("#{input}.png", img)
   end
 end
