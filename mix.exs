@@ -4,6 +4,7 @@ defmodule Identicon.Mixfile do
   def project do
     [
       app: :identicon,
+      escript: escript_config,
       version: "0.1.0",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
@@ -25,5 +26,9 @@ defmodule Identicon.Mixfile do
       {:ex_doc, "~> 0.16", only: :dev, runtime: false},
       {:egd, github: "erlang/egd"}
     ]
+  end
+
+  defp escript_config do
+    [main_module: Identicon.CLI]
   end
 end

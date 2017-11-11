@@ -1,6 +1,6 @@
-defmodule Identicon do
+defmodule Identicon.Create do
   @moduledoc """
-  Provides funtion `main/1` to create identicons
+  Provides funtion `create/1` to create identicons
   """
 
   @doc """
