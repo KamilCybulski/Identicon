@@ -8,7 +8,7 @@ defmodule Identicon do
 
   ## Parameters
     
-    - input: String that is used to generate identicon
+    - input: string
   """
   def main(input) do
     input
