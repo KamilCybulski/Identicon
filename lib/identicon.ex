@@ -18,8 +18,12 @@ defmodule Identicon do
     |> create_image
   end
 
+  # String -> Struct(Image)
   defp hash_input(input) do
-    input
+    hex = :crypto.hash(:md5, input)
+    |> :binary.bin_to_list
+
+    %Identicon.Image{ hex: hex }
   end
 
   defp pick_color(data) do
