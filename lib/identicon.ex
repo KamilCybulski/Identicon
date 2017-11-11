@@ -19,6 +19,7 @@ defmodule Identicon do
   end
 
   # String -> Struct(Image)
+  # Create an Image struct with hashed string as 'hex' property
   defp hash_input(input) do
     hex = :crypto.hash(:md5, input)
     |> :binary.bin_to_list
@@ -26,8 +27,10 @@ defmodule Identicon do
     %Identicon.Image{ hex: hex }
   end
 
-  defp pick_color(data) do
-    data
+  # Struct(Image) -> Struct(Image)
+  # Create an Image struct with a tri-element tuple as 'color' property
+  defp pick_color(%Identicon.Image{ hex: [r, g, b | _] } = image) do
+    %Identicon.Image{ data | color: { r, g, b } }
   end
 
   defp build_grid(data) do
