@@ -50,7 +50,7 @@ defmodule Identicon do
       |> Stream.filter(fn {num, _} -> rem(num, 2) == 0 end)
       |> Enum.to_list
 
-    %Identicon.Image{ data | grid: grid }
+    %Identicon.Image{data | grid: grid}
   end
 
 
