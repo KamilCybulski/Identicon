@@ -16,6 +16,7 @@ defmodule Identicon do
     |> pick_color
     |> build_grid
     |> build_pixel_map
+    |> draw_image
   end
 
 
@@ -74,7 +75,16 @@ defmodule Identicon do
     %Identicon.Image{data | pixel_map: pixel_map}
   end
 
-  defp create_image(data) do
-    data
+
+  # Struct(Image) -> File(png)
+  defp draw_image(%Identicon.Image{color: color, pixel_map: pixel_map}) do
+    image = :egd.create(250, 250)
+    fill = :egd.color(color)
+
+    Enum.each pixel_map, fn {top_left, bot_right} ->
+      :egd.filledRectangle(image, top_left, bot_right, fill)
+    end
+
+    :edg.render(image)
   end
 end
