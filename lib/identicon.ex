@@ -1,18 +1,36 @@
 defmodule Identicon do
   @moduledoc """
-  Documentation for Identicon.
+  Provides funtion `main/1` to create identicons
   """
 
   @doc """
-  Hello world.
+  Creates an identicon based on the provided string
 
-  ## Examples
-
-      iex> Identicon.hello
-      :world
-
+  ## Parameters
+    
+    - input: String that is used to generate identicon
   """
-  def hello do
-    :world
+  def main(input) do
+    input
+    |> hash_input
+    |> pick_color
+    |> build_grid
+    |> create_image
+  end
+
+  defp hash_input(input) do
+    input
+  end
+
+  defp pick_color(data) do
+    data
+  end
+
+  defp build_grid(data) do
+    data
+  end
+
+  defp create_image(data) do
+    data
   end
 end
