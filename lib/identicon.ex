@@ -24,27 +24,28 @@ defmodule Identicon do
     hex = :crypto.hash(:md5, input)
     |> :binary.bin_to_list
 
-    %Identicon.Image{ hex: hex }
+    %Identicon.Image{hex: hex}
   end
 
 
   # Struct(Image) -> Struct(Image)
   # Create an Image struct with a tri-element tuple as 'color' property
-  defp pick_color(%Identicon.Image{ hex: [r, g, b | _] } = data) do
-    %Identicon.Image{ data | color: { r, g, b } }
+  defp pick_color(%Identicon.Image{hex: [r, g, b | _]} = data) do
+    %Identicon.Image{data | color: {r, g, b}}
   end
 
 
   # Struct(Image) -> Struct(Image)
   # Create an Image struct with a 25 element list that represents identicon
   # image grid
-  defp build_grid(%Identicon.Image{ hex: hex } = data) do
+  defp build_grid(%Identicon.Image{hex: hex} = data) do
     grid = 
       hex
-      |> Enum.chunk_every(3, 3, :discard)
-      |> Enum.map(&mirror_row/1)
-      |> List.flatten
-      |> Enum.with_index
+      |> Stream.chunk_every(3, 3, :discard)
+      |> Stream.flat_map(&mirror_row/1)
+      |> Stream.with_index
+      |> Stream.filter(fn {num, _} -> rem(num, 2) == 0 end)
+      |> Enum.to_list
 
     %Identicon.Image{ data | grid: grid }
   end
