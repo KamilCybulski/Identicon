@@ -15,6 +15,7 @@ defmodule Identicon do
     |> hash_input
     |> pick_color
     |> build_grid
+    |> build_pixel_map
   end
 
 
@@ -56,6 +57,21 @@ defmodule Identicon do
   # Create a 5 element list that represents one row in identicon's image grid
   defp mirror_row([first, second | _] = row) do
     row ++ [second, first]
+  end
+
+
+  # Struct(Image) -> Struct(Image)
+  # Create an Image struct with a pixel_map property that represents
+  # the coordinates of each 50x50 px square in the identicon image
+  defp build_pixel_map(%Identicon.Image{grid: grid} = data) do
+    pixel_map = Enum.map grid, fn {_, index} ->
+      horizontal = rem(index, 5) * 50
+      vertical = div(index, 5) * 50
+      top_left = {horizontal, vertical}
+      bottom_rigth = {horizontal + 50, vertical + 50}
+    end
+
+    %Identicon.Image{data | pixel_map: pixel_map}
   end
 
   defp create_image(data) do
