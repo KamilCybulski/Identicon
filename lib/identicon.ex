@@ -15,8 +15,8 @@ defmodule Identicon do
     |> hash_input
     |> pick_color
     |> build_grid
-    |> create_image
   end
+
 
   # String -> Struct(Image)
   # Create an Image struct with hashed string as 'hex' property
@@ -27,14 +27,34 @@ defmodule Identicon do
     %Identicon.Image{ hex: hex }
   end
 
+
   # Struct(Image) -> Struct(Image)
   # Create an Image struct with a tri-element tuple as 'color' property
-  defp pick_color(%Identicon.Image{ hex: [r, g, b | _] } = image) do
+  defp pick_color(%Identicon.Image{ hex: [r, g, b | _] } = data) do
     %Identicon.Image{ data | color: { r, g, b } }
   end
 
-  defp build_grid(data) do
-    data
+
+  # Struct(Image) -> Struct(Image)
+  # Create an Image struct with a 25 element list that represents identicon
+  # image grid
+  defp build_grid(%Identicon.Image{ hex: hex } = data) do
+    grid = 
+      hex
+      |> Enum.chunk_every(3, 3, :discard)
+      |> Enum.map(&mirror_row/1)
+      |> List.flatten
+      |> Enum.with_index
+
+    %Identicon.Image{ data | grid: grid }
+  end
+
+
+  # List -> List
+  # Note: Provided list should have only 3 elements
+  # Create a 5 element list that represents one row in identicon's image grid
+  defp mirror_row([first, second | _] = row) do
+    row ++ [second, first]
   end
 
   defp create_image(data) do
