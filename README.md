@@ -4,7 +4,7 @@ A command line tool to create identicons.
 
 ## Installation
 
-From inside a project directory simply run `mix escript.build`. 
+From inside a project directory simply run `mix escript.build`
 
 ## Usage
 
